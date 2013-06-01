@@ -12,7 +12,7 @@ if (Meteor.isClient) {
   //Update the selected item
   Template.pronounce.selected_item = function () {
     var item = Pronunciations.findOne(Session.get("selected_item"));
-    return item && item.name;
+    return item;
   };
 
   //Set selected item
@@ -28,14 +28,50 @@ if (Meteor.isClient) {
           newVariationNumber = "variation" + variations.numVariations,
           newVariationValue = template.find(".new_variation").value;
 
-      Pronunciations.update(Session.get("selected_item"), {$push:{variations:{var: newVariationValue}}});
+      Pronunciations.update(Session.get("selected_item"), {$push:{variations:{var: newVariationValue, score: 0}}});
     },
 
     'click input.newItem': function (event, template) {
       var name = template.find(".new_name").value,
           pronunciation = template.find(".new_pronunciation").value;
 
-      Pronunciations.insert({name: name, variations: [ {"var": pronunciation} ] , numVariations: 1});
+      Pronunciations.insert({name: name, variations: [ {"var": pronunciation, score:0 } ] , numVariations: 1});
+    },
+
+    'click input.upVote': function (event, template) {
+      var varName = event.target.id,
+        currentItem = Pronunciations.findOne(Session.get("selected_item")),
+        currentVariations = currentItem.variations;
+
+      for(var i=0; i<currentVariations.length;i++) {
+        if(currentVariations[i].var == varName) {
+          var currentScore = currentVariations[i].score;
+
+          // minimongo doesn't support $ submodifier
+          // Workaround found here: https://github.com/meteor/meteor/blob/master/examples/parties/model.js#L123
+          var modifier = {$set: {}};
+          modifier.$set["variations." + i + ".score"] = currentScore + 1;
+          Pronunciations.update(Session.get("selected_item"), modifier);
+        }
+      } 
+    },
+
+    'click input.downVote': function (event, template) {
+      var varName = event.target.id,
+        currentItem = Pronunciations.findOne(Session.get("selected_item")),
+        currentVariations = currentItem.variations;
+
+      for(var i=0; i<currentVariations.length;i++) {
+        if(currentVariations[i].var == varName) {
+          var currentScore = currentVariations[i].score;
+
+          // minimongo doesn't support $ submodifier
+          // Workaround found here: https://github.com/meteor/meteor/blob/master/examples/parties/model.js#L123
+          var modifier = {$set: {}};
+          modifier.$set["variations." + i + ".score"] = currentScore - 1;
+          Pronunciations.update(Session.get("selected_item"), modifier);
+        }
+      } 
     }
   });
 
@@ -110,7 +146,8 @@ if (Meteor.isServer) {
         {"variation": "See-quell"}
       ]}];
       for (var i = 0; i < data.length; i++)
-        Pronunciations.insert({name: data[i].name, variations: [ {"var": data[i].pronunciations[0].variation}, {"var":data[i].pronunciations[1].variation} ] , numVariations: 2});
+        Pronunciations.insert({name: data[i].name, variations: [ {"var": data[i].pronunciations[0].variation, score: 0}, {"var":data[i].pronunciations[1].variation, score: 0} ] , numVariations: 2});
       }
   });
 }
+

@@ -9,44 +9,52 @@
 </body>
 
 <template name="pronounce">
-  <h3>The Pronunciations of FOSS4G-NA</h3>
+  <h3>The Pronunciations of FOSS4G-NA 2013*</h3>
   <div class="pronounce">
   	<table>
-  		<tr>
-  			<th>Name</th>
-  		</tr>
-    {{#each pronunciations}}
-      {{> item_template}}
-    {{/each}}
+      {{#each pronunciations}}
+        {{> item_template}}
+      {{/each}}
     </table>
 
   {{#if selected_item}}
   <div class="details">
-    <div class="name">{{selected_item}}</div>
+    <div class="name">{{selected_item.name}}</div>
+    <ul class="name listTitle">Vote for a variation:
+      {{#each selected_item.variations}}
+      <li>{{var}} - {{score}} <input type="button" id="{{var}}" class="upVote" value="+1" /><input type="button" id="{{var}}" class="downVote" value="-1" /></li>
+      {{/each}}
+    </ul>
+    <p class="name helpText">or add a new pronunciation variation</p>
     <input type="text" class="new_variation" placeholder="new variation" />
     <input type="button" class="submitVariation" value="Submit" />
   </div>
   {{/if}}
 
   {{#unless selected_item}}
-  <div class="none">Click an item to add a variation of an  <br>
-  	existing item or add a new item below<br>
+  <div class="none">Click an item to vote for the best<br> pronunciation 
+    or to add a variation,  <br>
+    or add a new item below<br>
 
   	<input type="text" class="new_name" placeholder="New item name" />
   	<input type="text" class="new_pronunciation" placeholder="Pronunciation" />
   	<input type="button" class="newItem" value="Add new item"/>
   </div>
-
   {{/unless}}
-  </div>
 
+  </div> <!-- end div 'pronounce' -->
+  <div class="footer">
+    <p>*Not moderated or limited in any way, and is intended to be fun <br>
+      Based on the <a href="http://meteor.com/examples/leaderboard">Meteor Leaderboard example</a> <br>
+      Created by John J Czaplewski | @JJCzaplewski</p>
+  </div>
 </template>
 
 <template name="item_template">
 	<tr class="item {{selected}}">
 		<td class="name">{{name}}</td>
 		{{#each variations}}
-		<td class="pronunciations">{{var}}</td>
+		<td class="pronunciations">{{var}} - {{score}}</td>
 		{{/each}}
 	</tr>
 </template>

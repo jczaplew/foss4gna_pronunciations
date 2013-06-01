@@ -1,38 +1,56 @@
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 200;
-    margin: 50px 0;
-    padding: 0;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 200;
+  margin: 50px 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
-
 #outer {
-    width: 600px;
-    margin: 0 auto;    
+  width: 600px;
+  margin: 0 auto;    
 }
-
 .pronunciations {
-	font-style: italic;
+  font-style: italic;
 }
-
 .item.selected {
-    background-color: yellow;
+  background-color: yellow;
 }
-
 .details, .none {
-    font-weight: bold;
-    font-size: 2em;
-    border-style: dashed none none none;
-    border-color: #ccc;
-    border-width: 4px;
-    margin: 50px 10px;
-    padding: 10px 0px;
+  font-weight: bold;
+  font-size: 2em;
+  border-style: dashed none none none;
+  border-color: #ccc;
+  border-width: 4px;
+  margin: 50px 10px;
+  padding: 10px 0px;
 }
-
 .none {
-    color: #777;
+  color: #777;
+}
+.name {
+  color: #777;
+}
+ul {
+  list-style: none
+}
+.listTitle {
+  font-size: 24px;
+  font-style: italic;
+  font-weight: normal;
+  margin-left:-39px;
+  margin-top: 3px;
+}
+li {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 200;
+}
+.helpText {
+  font-weight: 200;
+  font-size: 14px;
+  font-style: normal;
 }
